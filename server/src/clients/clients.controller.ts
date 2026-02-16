@@ -24,6 +24,7 @@ export class ClientsController {
   }
   @Delete(":id")
   async delete(@Param("id") id: string){
-    return await this.clientsService.delete(id)
+    const deletedId = await this.clientsService.delete(id);
+    return { id: deletedId };
   }
 }

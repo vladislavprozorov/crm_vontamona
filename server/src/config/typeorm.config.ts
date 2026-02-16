@@ -10,6 +10,6 @@ export async function getTypeOrmConfig(configService: ConfigService): Promise<Ty
         password: configService.getOrThrow<string>("DB_PASSWORD"),
         database: configService.getOrThrow<string>("DB_NAME"),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: configService.get<string>("DB_SYNCHRONIZE", "true") === "true",
       }
 }
