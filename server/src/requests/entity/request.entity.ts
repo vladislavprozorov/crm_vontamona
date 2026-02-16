@@ -25,11 +25,12 @@ export class RequestEntity {
   @Column({ type: 'text' })
   status: RequestStatus;
 
-  @Column({ type: 'uuid', name: 'client_id' })
+  @Column({ type: 'uuid', name: 'client_id', nullable: true })
   clientId: string;
 
   @ManyToOne(() => ClientEntity, (client) => client.requests, {
     onDelete: 'CASCADE',
+    nullable: true,
   })
   @JoinColumn({ name: 'client_id' })
   client: ClientEntity;
