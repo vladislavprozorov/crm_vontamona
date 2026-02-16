@@ -7,7 +7,6 @@ import { NotFoundException } from '@nestjs/common';
 
 describe('ClientsController', () => {
   let controller: ClientsController;
-  let service: ClientsService;
 
   const mockClientEntity: ClientEntity = {
     id: '123e4567-e89b-12d3-a456-426614174000',
@@ -50,7 +49,6 @@ describe('ClientsController', () => {
     }).compile();
 
     controller = module.get<ClientsController>(ClientsController);
-    service = module.get<ClientsService>(ClientsService);
   });
 
   afterEach(() => {
@@ -68,7 +66,7 @@ describe('ClientsController', () => {
       const result = await controller.findAll();
 
       expect(result).toEqual(mockClientsArray);
-      expect(service.findAll).toHaveBeenCalledTimes(1);
+      expect(mockClientsService.findAll).toHaveBeenCalledTimes(1);
     });
 
     it('should return an empty array when no clients exist', async () => {
@@ -77,7 +75,7 @@ describe('ClientsController', () => {
       const result = await controller.findAll();
 
       expect(result).toEqual([]);
-      expect(service.findAll).toHaveBeenCalledTimes(1);
+      expect(mockClientsService.findAll).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -88,8 +86,10 @@ describe('ClientsController', () => {
       const result = await controller.findById(mockClientEntity.id);
 
       expect(result).toEqual(mockClientEntity);
-      expect(service.findById).toHaveBeenCalledWith(mockClientEntity.id);
-      expect(service.findById).toHaveBeenCalledTimes(1);
+      expect(mockClientsService.findById).toHaveBeenCalledWith(
+        mockClientEntity.id,
+      );
+      expect(mockClientsService.findById).toHaveBeenCalledTimes(1);
     });
 
     it('should throw NotFoundException when client not found', async () => {
@@ -100,7 +100,9 @@ describe('ClientsController', () => {
       await expect(controller.findById('non-existent-id')).rejects.toThrow(
         NotFoundException,
       );
-      expect(service.findById).toHaveBeenCalledWith('non-existent-id');
+      expect(mockClientsService.findById).toHaveBeenCalledWith(
+        'non-existent-id',
+      );
     });
   });
 
@@ -117,8 +119,8 @@ describe('ClientsController', () => {
       const result = await controller.create(createDto);
 
       expect(result).toEqual(mockClientEntity);
-      expect(service.create).toHaveBeenCalledWith(createDto);
-      expect(service.create).toHaveBeenCalledTimes(1);
+      expect(mockClientsService.create).toHaveBeenCalledWith(createDto);
+      expect(mockClientsService.create).toHaveBeenCalledTimes(1);
     });
 
     it('should handle validation errors', async () => {
@@ -133,7 +135,7 @@ describe('ClientsController', () => {
       );
 
       await expect(controller.create(invalidDto)).rejects.toThrow();
-      expect(service.create).toHaveBeenCalledWith(invalidDto);
+      expect(mockClientsService.create).toHaveBeenCalledWith(invalidDto);
     });
   });
 
@@ -155,11 +157,11 @@ describe('ClientsController', () => {
       const result = await controller.update(mockClientEntity.id, updateDto);
 
       expect(result).toEqual(updatedClient);
-      expect(service.update).toHaveBeenCalledWith(
+      expect(mockClientsService.update).toHaveBeenCalledWith(
         mockClientEntity.id,
         updateDto,
       );
-      expect(service.update).toHaveBeenCalledTimes(1);
+      expect(mockClientsService.update).toHaveBeenCalledTimes(1);
     });
 
     it('should throw NotFoundException when trying to update non-existent client', async () => {
@@ -176,7 +178,10 @@ describe('ClientsController', () => {
       await expect(
         controller.update('non-existent-id', updateDto),
       ).rejects.toThrow(NotFoundException);
-      expect(service.update).toHaveBeenCalledWith('non-existent-id', updateDto);
+      expect(mockClientsService.update).toHaveBeenCalledWith(
+        'non-existent-id',
+        updateDto,
+      );
     });
   });
 
@@ -187,8 +192,10 @@ describe('ClientsController', () => {
       const result = await controller.delete(mockClientEntity.id);
 
       expect(result).toEqual({ id: mockClientEntity.id });
-      expect(service.delete).toHaveBeenCalledWith(mockClientEntity.id);
-      expect(service.delete).toHaveBeenCalledTimes(1);
+      expect(mockClientsService.delete).toHaveBeenCalledWith(
+        mockClientEntity.id,
+      );
+      expect(mockClientsService.delete).toHaveBeenCalledTimes(1);
     });
 
     it('should throw NotFoundException when trying to delete non-existent client', async () => {
@@ -199,7 +206,7 @@ describe('ClientsController', () => {
       await expect(controller.delete('non-existent-id')).rejects.toThrow(
         NotFoundException,
       );
-      expect(service.delete).toHaveBeenCalledWith('non-existent-id');
+      expect(mockClientsService.delete).toHaveBeenCalledWith('non-existent-id');
     });
   });
 });

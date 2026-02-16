@@ -11,13 +11,16 @@ import { getTypeOrmConfig } from './config/typeorm.config';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env'
-    })
-    ,TypeOrmModule.forRootAsync({
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: getTypeOrmConfig,
-      inject: [ConfigService]
-  }),ClientsModule, RequestsModule],
+      inject: [ConfigService],
+    }),
+    ClientsModule,
+    RequestsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

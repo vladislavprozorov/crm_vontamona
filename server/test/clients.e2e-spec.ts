@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
@@ -19,11 +23,13 @@ describe('Clients API (e2e)', () => {
     await app.init();
 
     dataSource = moduleFixture.get<DataSource>(DataSource);
-  }, 30000); 
+  }, 30000);
   afterAll(async () => {
     if (dataSource && dataSource.isInitialized) {
       try {
-        await dataSource.query('DELETE FROM clients WHERE email LIKE \'%test-e2e%\'');
+        await dataSource.query(
+          "DELETE FROM clients WHERE email LIKE '%test-e2e%'",
+        );
       } catch (error) {
         console.error('Error cleaning up test data:', error);
       }
@@ -104,7 +110,7 @@ describe('Clients API (e2e)', () => {
 
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBeGreaterThan(0);
-      
+
       // Проверяем структуру первого клиента
       if (response.body.length > 0) {
         const client = response.body[0];
@@ -124,7 +130,9 @@ describe('Clients API (e2e)', () => {
       if (response.body.length > 1) {
         const firstDate = new Date(response.body[0].createdAt);
         const secondDate = new Date(response.body[1].createdAt);
-        expect(firstDate.getTime()).toBeGreaterThanOrEqual(secondDate.getTime());
+        expect(firstDate.getTime()).toBeGreaterThanOrEqual(
+          secondDate.getTime(),
+        );
       }
     });
   });
@@ -144,10 +152,8 @@ describe('Clients API (e2e)', () => {
 
     it('should return 404 for non-existent client', async () => {
       const fakeId = '00000000-0000-0000-0000-000000000000';
-      
-      await request(app.getHttpServer())
-        .get(`/clients/${fakeId}`)
-        .expect(404);
+
+      await request(app.getHttpServer()).get(`/clients/${fakeId}`).expect(404);
     });
 
     it('should return 500 for invalid UUID format', async () => {
@@ -225,7 +231,7 @@ describe('Clients API (e2e)', () => {
       await request(app.getHttpServer())
         .delete(`/clients/${createdClientId}`)
         .expect(200);
-      
+
       // Достаточно проверить, что DELETE выполнился успешно (200)
     });
 
@@ -237,7 +243,7 @@ describe('Clients API (e2e)', () => {
 
     it('should return 404 when deleting non-existent client', async () => {
       const fakeId = '00000000-0000-0000-0000-000000000000';
-      
+
       await request(app.getHttpServer())
         .delete(`/clients/${fakeId}`)
         .expect(404);
@@ -303,9 +309,7 @@ describe('Clients API (e2e)', () => {
         .expect(200);
 
       // 6. Verify deletion
-      await request(app.getHttpServer())
-        .get(`/clients/${userId}`)
-        .expect(404);
+      await request(app.getHttpServer()).get(`/clients/${userId}`).expect(404);
     });
   });
 });
