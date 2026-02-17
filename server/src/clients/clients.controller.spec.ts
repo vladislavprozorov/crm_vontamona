@@ -14,7 +14,6 @@ describe('ClientsController', () => {
     email: 'john@example.com',
     description: 'Test description',
     createdAt: new Date('2024-01-01'),
-    requests: [],
   };
 
   const mockClientsArray: ClientEntity[] = [
@@ -25,7 +24,6 @@ describe('ClientsController', () => {
       email: 'jane@example.com',
       description: 'Another test description',
       createdAt: new Date('2024-01-02'),
-      requests: [],
     },
   ];
 

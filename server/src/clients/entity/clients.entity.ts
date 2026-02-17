@@ -1,10 +1,8 @@
-import { RequestEntity } from 'src/requests/entity/request.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   Generated,
-  OneToMany,
   PrimaryColumn,
 } from 'typeorm';
 
@@ -19,9 +17,6 @@ export class ClientEntity {
 
   @Column()
   email: string;
-
-  @OneToMany(() => RequestEntity, (request) => request.client)
-  requests: RequestEntity[];
 
   @Column({ type: 'text' })
   description: string;
