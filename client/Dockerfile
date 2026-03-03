@@ -30,7 +30,7 @@ RUN npm ci --only=production
 # Копирование собранного приложения
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.ts ./
+COPY --from=builder /app/next.config.js ./
 
 # Открытие порта
 EXPOSE 3000

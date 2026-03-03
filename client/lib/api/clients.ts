@@ -1,6 +1,17 @@
 import { Client, CreateClientDto, UpdateClientDto } from '@/types/client';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+// Определяем API_URL в зависимости от окружения
+const getApiUrl = () => {
+  // Если код выполняется в браузере (client-side)
+  if (typeof window !== 'undefined') {
+    return 'http://localhost:3001';
+  }
+  // Если код выполняется на сервере Next.js (server-side)
+  // Используем внутренний Docker hostname 'backend' или переменную окружения
+  return process.env.INTERNAL_API_URL || 'http://backend:3001';
+};
+
+const API_URL = getApiUrl();
 
 export const clientsApi = {
   // Получить всех клиентов
