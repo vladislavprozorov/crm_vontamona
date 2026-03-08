@@ -7,49 +7,8 @@ on:
     branches: [main, develop]
 
 jobs:
-  backend-prepare:
-    name: Backend - Prepare
-    runs-on: ubuntu-latest
-    outputs:
-      cache-key: ${{ steps.cache-key.outputs.key }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Get cache key
-        id: cache-key
-        run: echo "key=${{ runner.os }}-backend-${{ hashFiles('server/pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
-      
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          run_install: false
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "pnpm"
-          cache-dependency-path: server/pnpm-lock.yaml
-      
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: server/node_modules
-          key: ${{ steps.cache-key.outputs.key }}
-          restore-keys: |
-            ${{ runner.os }}-backend-
-      
-      - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        working-directory: ./server
-        run: pnpm install
-
   backend-test:
     name: Backend - Test
-    needs: backend-prepare
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -81,12 +40,9 @@ jobs:
         with:
           node-version: "20"
       
-      - name: Restore node_modules cache
-        uses: actions/cache@v3
-        with:
-          path: server/node_modules
-          key: ${{ needs.backend-prepare.outputs.cache-key }}
-          fail-on-cache-miss: true
+      - name: Install dependencies
+        working-directory: ./server
+        run: pnpm install
       
       - name: Run lint
         working-directory: ./server
@@ -150,15 +106,9 @@ jobs:
         with:
           node-version: "20"
       
-      - name: Restore node_modules cache
-        uses: actions/cache@v3
-        with:
-          path: server/node_modules
-          key: ${{ needs.backend-prepare.outputs.cache-key }}
-          fail-on-cache-miss: true
-
-      - name: Add pnpm to PATH
-        run: echo "${{ github.workspace }}/server/node_modules/.bin" >> $GITHUB_PATH
+      - name: Install dependencies
+        working-directory: ./server
+        run: pnpm install
       
       - name: Build project
         working-directory: ./server
@@ -171,45 +121,8 @@ jobs:
           path: server/dist
           if-no-files-found: error
 
-  # Frontend jobs
-  frontend-prepare:
-    name: Frontend - Prepare
-    runs-on: ubuntu-latest
-    outputs:
-      cache-key: ${{ steps.cache-key.outputs.key }}
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Get cache key
-        id: cache-key
-        run: echo "key=${{ runner.os }}-frontend-${{ hashFiles('client/package-lock.json') }}" >> $GITHUB_OUTPUT
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-          cache-dependency-path: client/package-lock.json
-      
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: client/node_modules
-          key: ${{ steps.cache-key.outputs.key }}
-          restore-keys: |
-            ${{ runner.os }}-frontend-
-      
-      - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        working-directory: ./client
-        run: npm ci
-
   frontend-test:
     name: Frontend - Test
-    needs: frontend-prepare
     runs-on: ubuntu-latest
     
     steps:
@@ -221,12 +134,9 @@ jobs:
         with:
           node-version: "20"
       
-      - name: Restore node_modules cache
-        uses: actions/cache@v3
-        with:
-          path: client/node_modules
-          key: ${{ needs.frontend-prepare.outputs.cache-key }}
-          fail-on-cache-miss: true
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm ci
       
       - name: Run lint
         working-directory: ./client
@@ -254,15 +164,10 @@ jobs:
         with:
           node-version: "20"
       
-      - name: Restore node_modules cache
-        uses: actions/cache@v3
-        with:
-          path: client/node_modules
-          key: ${{ needs.frontend-prepare.outputs.cache-key }}
-          fail-on-cache-miss: true
-
-      - name: Add npm to PATH
-        run: echo "${{ github.workspace }}/client/node_modules/.bin" >> $GITHUB_PATH
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        working-directory: ./client
+        run: npm ci
       
       - name: Build project
         working-directory: ./client
