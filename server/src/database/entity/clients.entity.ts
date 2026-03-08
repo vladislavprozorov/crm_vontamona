@@ -8,7 +8,7 @@ import {
 
 @Entity({ name: 'clients' })
 export class ClientEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'uuid' })
   @Generated('uuid')
   id: string;
 

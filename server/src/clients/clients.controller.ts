@@ -16,19 +16,19 @@ export class ClientsController {
 
   @Get()
   async findAll() {
-    return await this.clientsService.findAll();
+    return this.clientsService.findAll();
   }
   @Get(':id')
   async findById(@Param('id') id: string) {
-    return await this.clientsService.findById(id);
+    return this.clientsService.findById(id);
   }
   @Post()
   async create(@Body() dto: UsersDto) {
-    return await this.clientsService.create(dto);
+    return this.clientsService.create(dto);
   }
   @Put(':id')
   async update(@Param('id') id: string, @Body() dto: UsersDto) {
-    return await this.clientsService.update(id, dto);
+    return this.clientsService.update(id, dto);
   }
   @Delete(':id')
   async delete(@Param('id') id: string) {

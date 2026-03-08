@@ -1,4 +1,4 @@
-import { ClientEntity } from 'src/clients/entity/clients.entity';
+import { ClientEntity } from './clients.entity';
 import {
   Column,
   CreateDateColumn,
@@ -12,7 +12,7 @@ import {
 export type RequestStatus = '1' | '2';
 @Entity({ name: 'requests' })
 export class RequestEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'uuid' })
   @Generated('uuid')
   id: string;
 
@@ -32,7 +32,7 @@ export class RequestEntity {
     onDelete: 'CASCADE',
     nullable: true,
   })
-  @JoinColumn({ name: 'client_id' })
+  @JoinColumn({ name: 'client_id', referencedColumnName: 'id' })
   client: ClientEntity;
 
   @Column({ type: 'text' })

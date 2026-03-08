@@ -12,6 +12,6 @@ export function getTypeOrmConfig(
     password: configService.getOrThrow<string>('DB_PASSWORD'),
     database: configService.getOrThrow<string>('DB_NAME'),
     autoLoadEntities: true,
-    synchronize: configService.get<string>('DB_SYNCHRONIZE', 'true') === 'true',
+    synchronize: false,
   };
 }

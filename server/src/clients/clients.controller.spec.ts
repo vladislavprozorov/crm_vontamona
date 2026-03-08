@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClientsController } from './clients.controller';
 import { ClientsService } from './clients.service';
 import { UsersDto } from './dto/Users.dto';
-import { ClientEntity } from './entity/clients.entity';
+import { ClientEntity } from '../database/entity/clients.entity';
 import { NotFoundException } from '@nestjs/common';
 
 describe('ClientsController', () => {
