@@ -156,6 +156,9 @@ jobs:
           path: server/node_modules
           key: ${{ needs.backend-prepare.outputs.cache-key }}
           fail-on-cache-miss: true
+
+      - name: Add pnpm to PATH
+        run: echo "${{ github.workspace }}/server/node_modules/.bin" >> $GITHUB_PATH
       
       - name: Build project
         working-directory: ./server
@@ -257,6 +260,9 @@ jobs:
           path: client/node_modules
           key: ${{ needs.frontend-prepare.outputs.cache-key }}
           fail-on-cache-miss: true
+
+      - name: Add npm to PATH
+        run: echo "${{ github.workspace }}/client/node_modules/.bin" >> $GITHUB_PATH
       
       - name: Build project
         working-directory: ./client
