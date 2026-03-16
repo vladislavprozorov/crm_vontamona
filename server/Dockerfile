@@ -27,6 +27,8 @@ RUN npm install -g pnpm
 
 # Копирование package.json
 COPY package.json pnpm-lock.yaml ./
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Установка только production зависимостей
 RUN pnpm install --prod --frozen-lockfile
@@ -37,5 +39,6 @@ COPY --from=builder /app/dist ./dist
 # Открытие порта
 EXPOSE 3001
 
+ENTRYPOINT ["docker-entrypoint.sh"]
 # Запуск приложения
 CMD ["node", "dist/main"]

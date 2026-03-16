@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { ClientsService } from './clients.service';
-import { ClientEntity } from './entity/clients.entity';
+import { ClientEntity } from '../database/entity/clients.entity';
 import { UsersDto } from './dto/Users.dto';
 
 describe('ClientsService', () => {
