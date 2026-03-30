@@ -1,22 +1,56 @@
 terraform {
   required_providers {
-    virtualbox = {
-      source  = "terra-farm/virtualbox"
-      version = "0.2.2"
+    twc = {
+      source = "tf.timeweb.cloud/timeweb-cloud/timeweb-cloud"
     }
   }
+  required_version = ">= 0.13"
 }
 
-provider "virtualbox" {}
+# токен можно задать через переменную окружения TWC_TOKEN или в провайдере
+provider "twc" {
+   token = ""
+}
 
-resource "virtualbox_vm" "ubuntu" {
-  name   = "devops-vm"
-  image  = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.vdi"
-  cpus   = 2
-  memory = "2048 mib"
+data "twc_configurator" "this" {
+  location    = "ru-1"
+  preset_type = "standard"
+}
 
-  network_adapter {
-    type           = "nat"
-    host_interface = "vboxnet0"
+data "twc_os" "ubuntu" {
+  family  = "linux"
+  name    = "ubuntu"
+  version = "22.04"
+}
+
+resource "twc_ssh_key" "my_key" {
+  name      = "my-ssh-key"
+  body = file("C:\\Users\\Jenya\\.ssh\\id_rsa.pub")
+}
+
+resource "twc_server" "my_server" {
+  name       = "devops-server"
+  os_id      = data.twc_os.ubuntu.id
+  ssh_keys_ids = [twc_ssh_key.my_key.id]
+
+  configuration {
+    configurator_id = data.twc_configurator.this.id
+    cpu             = 2
+    ram             = 2048
+    disk            = 1024 * 25
   }
+  
 }
+
+resource "twc_server_ip" "my_server" {
+  source_server_id = twc_server.my_server.id
+
+  type = "ipv4"
+}
+
+output "server_ip" {
+  description = "Публичный IP-адрес сервера"
+  value       = twc_server_ip.my_server.ip
+}
+
+# Пароль от сервера должен прийти на почту

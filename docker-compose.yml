@@ -33,7 +33,6 @@ services:
       - DB_USERNAME=${POSTGRES_USER:-root}
       - DB_PASSWORD=${POSTGRES_PASSWORD:-123456}
       - DB_NAME=${POSTGRES_DB:-nestjs-db}
-      - DB_SYNCHRONIZE=true
     ports:
       - "3001:3001"
     depends_on:
