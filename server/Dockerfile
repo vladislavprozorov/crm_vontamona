@@ -6,14 +6,10 @@ WORKDIR /app
 # Установка pnpm
 RUN npm install -g pnpm
 
-# Копирование package.json и pnpm-lock.yaml
-COPY package.json pnpm-lock.yaml ./
-
+COPY package.json pnpm-lock.yaml docker-entrypoint.sh nest-cli.json tsconfig.build.json tsconfig.json ./
+COPY src/ ./src/
 # Установка зависимостей
 RUN pnpm install --frozen-lockfile
-
-# Копирование исходного кода
-COPY . .
 
 # Сборка приложения
 RUN pnpm build

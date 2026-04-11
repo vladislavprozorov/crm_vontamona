@@ -4,13 +4,15 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Копирование package files
-COPY package*.json ./
+COPY package*.json next.* tsconfig.json tailwind.* ./
+COPY app/ ./app/
+COPY components/ ./components/
+COPY lib/ ./lib/
+COPY public/ ./public/
+COPY types/ ./types/
 
 # Установка зависимостей
 RUN npm ci
-
-# Копирование исходного кода
-COPY . .
 
 # Установка переменных окружения для сборки
 ENV NEXT_PUBLIC_API_URL=http://localhost:3001
