@@ -191,8 +191,8 @@ jobs:
       - name: Build and Push Backend
         run: |
           docker compose build backend
-          docker tag crm_vontamona-backend:latest jenya00/crm_vontamona-backend:${{ github.sha }}
-          docker push jenya00/crm_vontamona-backend:${{ github.sha }}
+          docker tag crm_vontamona-backend:latest jenya00/crm_vontamona-backend:latest
+          docker push jenya00/crm_vontamona-backend:latest
   
   build-and-push-frontend:
     runs-on: ubuntu-latest
@@ -210,5 +210,5 @@ jobs:
       - name: Build and Push Frontend
         run: |
           docker compose build frontend
-          docker tag crm_vontamona-frontend:latest jenya00/crm_vontamona-frontend:${{ github.sha }}
-          docker push jenya00/crm_vontamona-frontend:${{ github.sha }}
+          docker tag crm_vontamona-frontend:latest jenya00/crm_vontamona-frontend:latest
+          docker push jenya00/crm_vontamona-frontend:latest
