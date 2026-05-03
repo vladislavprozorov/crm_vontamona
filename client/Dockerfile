@@ -4,7 +4,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Копирование package files
-COPY package*.json next.* tsconfig.json tailwind.* ./
+COPY package*.json next.* tsconfig.json tailwind.* postcss.* ./
 COPY app/ ./app/
 COPY components/ ./components/
 COPY lib/ ./lib/
