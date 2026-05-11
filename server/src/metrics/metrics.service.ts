@@ -6,12 +6,18 @@ import {
   Counter,
 } from 'prom-client';
 
+type HttpLabels = {
+  method: string;
+  route: string;
+  status_code: string;
+};
+
 @Injectable()
 export class MetricsService {
   private readonly register: Registry;
 
-  public httpRequestDuration: Histogram;
-  public httpRequestsTotal: Counter;
+  public httpRequestDuration: Histogram<HttpLabels>;
+  public httpRequestsTotal: Counter<HttpLabels>;
 
   constructor() {
     this.register = new Registry();
@@ -20,14 +26,14 @@ export class MetricsService {
     collectDefaultMetrics({ register: this.register });
 
     // Создаём свои HTTP метрики
-    this.httpRequestDuration = new Histogram({
+    this.httpRequestDuration = new Histogram<HttpLabels>({
       name: 'http_request_duration_seconds',
       help: 'Duration of HTTP requests in seconds',
       labelNames: ['method', 'route', 'status_code'],
       registers: [this.register],
     });
 
-    this.httpRequestsTotal = new Counter({
+    this.httpRequestsTotal = new Counter<HttpLabels>({
       name: 'http_requests_total',
       help: 'Total number of HTTP requests',
       labelNames: ['method', 'route', 'status_code'],
@@ -36,7 +42,7 @@ export class MetricsService {
   }
 
   // Метод для получения всех метрик в формате Prometheus
-  async getMetrics(): Promise<string> {
-    return await this.register.metrics();
+  getMetrics(): string {
+    return this.register.metrics();
   }
 }

@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crm-vontamona
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/vladislavprozorov/crm_vontamona.git
+    targetRevision: main
+    path: infrastructure/k3s
+    directory:
+      recurse: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

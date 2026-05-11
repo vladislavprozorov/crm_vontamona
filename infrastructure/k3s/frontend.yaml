@@ -7,8 +7,8 @@ spec:
   selector:
     app: frontend
   ports:
-  - port: 3000
-    targetPort: 3000
+    - port: 3000
+      targetPort: 3000
   type: LoadBalancer
 ---
 apiVersion: apps/v1
@@ -26,11 +26,19 @@ spec:
         app: frontend
     spec:
       initContainers:
-      - name: wait-for-backend
-        image: busybox:1.28
-        command: ['sh', '-c', 'until nc -z backend 3001; do echo waiting for backend; sleep 2; done;']
+        - name: wait-for-backend
+          image: busybox:1.28
+          command:
+            [
+              "sh",
+              "-c",
+              "until nc -z backend 3001; do echo waiting for backend; sleep 2; done;",
+            ]
       containers:
-      - name: frontend
-        image: jenya00/crm_vontamona-frontend:latest
-        ports:
-        - containerPort: 3000
+        - name: frontend
+          image: jenya00/crm_vontamona-frontend:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: INTERNAL_API_URL
+              value: http://backend:3001

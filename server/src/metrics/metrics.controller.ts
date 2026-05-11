@@ -7,8 +7,8 @@ export class MetricsController {
   constructor(private readonly metricsService: MetricsService) {}
 
   @Get()
-  async getMetrics(@Res() res: Response): Promise<void> {
-    const metrics = await this.metricsService.getMetrics();
+  getMetrics(@Res() res: Response): void {
+    const metrics = this.metricsService.getMetrics();
     res.set('Content-Type', 'text/plain; version=0.0.4');
     res.send(metrics);
   }

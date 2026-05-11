@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
+    "test:ci": "vitest run --coverage",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage"
@@ -37,6 +38,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5.1.4",
+    "@vitest/coverage-v8": "^4.0.18",
     "@vitest/ui": "^4.0.18",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
