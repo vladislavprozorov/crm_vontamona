@@ -4,7 +4,8 @@ on:
   push:
     branches: [main, develop, lab4-ci-cd-security]
   pull_request:
-    branches: [main, develop]
+    branches: [main, develop, lab4-ci-cd-security]
+  workflow_dispatch:
 
 jobs:
   backend-test:
