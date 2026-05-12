@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/vladislavprozorov/crm_vontamona.git
-    targetRevision: main
+    targetRevision: lab4-ci-cd-security
     path: infrastructure/k3s
     directory:
       recurse: false
