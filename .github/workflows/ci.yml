@@ -381,11 +381,11 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add infrastructure/k3s/backend.yaml infrastructure/k3s/frontend.yaml
-          git commit -m "chore(k8s): bump images to ${GITHUB_SHA}"
+          git commit -m "chore(k8s): bump images to ${GITHUB_SHA} [skip ci]"
           git push
 
       - name: Telegram notify
-        if: always()
+        if: always() && secrets.TELEGRAM_BOT_TOKEN != '' && secrets.TELEGRAM_CHAT_ID != ''
         uses: appleboy/telegram-action@v1.0.0
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
