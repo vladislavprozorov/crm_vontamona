@@ -1,5 +1,6 @@
 import { MetricsController } from './metrics.controller';
 import { MetricsService } from './metrics.service';
+import type { Response } from 'express';
 
 describe('MetricsController', () => {
   it('sets content-type and sends metrics', () => {
@@ -9,17 +10,20 @@ describe('MetricsController', () => {
 
     const controller = new MetricsController(service as MetricsService);
 
+    const setMock = jest.fn() as unknown as Response['set'];
+    const sendMock = jest.fn() as unknown as Response['send'];
+
     const res = {
-      set: jest.fn(),
-      send: jest.fn(),
-    } as unknown as any;
+      set: setMock,
+      send: sendMock,
+    } as unknown as Response;
 
     controller.getMetrics(res);
 
-    expect(res.set).toHaveBeenCalledWith(
+    expect(setMock).toHaveBeenCalledWith(
       'Content-Type',
       'text/plain; version=0.0.4',
     );
-    expect(res.send).toHaveBeenCalledWith('my_metrics');
+    expect(sendMock).toHaveBeenCalledWith('my_metrics');
   });
 });
