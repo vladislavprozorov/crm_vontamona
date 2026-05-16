@@ -88,7 +88,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Telegram notify
-        if: always() && ${{secrets.TELEGRAM_BOT_TOKEN != ''}} && ${{secrets.TELEGRAM_CHAT_ID != ''}}
+        if: always()
         uses: appleboy/telegram-action@v1.0.0
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -98,6 +98,7 @@ jobs:
             Status: ${{ job.status }}
             Ref: ${{ github.ref_name }}
             Commit: ${{ github.sha }}
+        continue-on-error: true
 
   backend-build:
     name: Backend - Build
@@ -135,7 +136,7 @@ jobs:
           if-no-files-found: error
 
       - name: Telegram notify
-        if: always() && ${{secrets.TELEGRAM_BOT_TOKEN != ''}} && ${{secrets.TELEGRAM_CHAT_ID != ''}}
+        if: always()
         uses: appleboy/telegram-action@v1.0.0
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -145,6 +146,7 @@ jobs:
             Status: ${{ job.status }}
             Ref: ${{ github.ref_name }}
             Commit: ${{ github.sha }}
+        continue-on-error: true
 
   frontend-test:
     name: Frontend - Test
@@ -185,7 +187,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Telegram notify
-        if: always() && ${{secrets.TELEGRAM_BOT_TOKEN != ''}} && ${{secrets.TELEGRAM_CHAT_ID != ''}}
+        if: always()
         uses: appleboy/telegram-action@v1.0.0
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -195,6 +197,7 @@ jobs:
             Status: ${{ job.status }}
             Ref: ${{ github.ref_name }}
             Commit: ${{ github.sha }}
+        continue-on-error: true
 
   frontend-build:
     name: Frontend - Build
@@ -221,7 +224,7 @@ jobs:
           NEXT_PUBLIC_API_URL: http://localhost:3001
 
       - name: Telegram notify
-        if: always() && ${{secrets.TELEGRAM_BOT_TOKEN != ''}} && ${{secrets.TELEGRAM_CHAT_ID != ''}}
+        if: always()
         uses: appleboy/telegram-action@v1.0.0
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -231,6 +234,7 @@ jobs:
             Status: ${{ job.status }}
             Ref: ${{ github.ref_name }}
             Commit: ${{ github.sha }}
+        continue-on-error: true
 
   sonarqube:
     name: SonarQube - Scan & Quality Gate
@@ -266,7 +270,7 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
       - name: Telegram notify
-        if: always() && ${{secrets.TELEGRAM_BOT_TOKEN != ''}} && ${{secrets.TELEGRAM_CHAT_ID != ''}}
+        if: always()
         uses: appleboy/telegram-action@v1.0.0
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -276,6 +280,7 @@ jobs:
             Status: ${{ job.status }}
             Ref: ${{ github.ref_name }}
             Commit: ${{ github.sha }}
+        continue-on-error: true
 
   build-and-push-backend:
     runs-on: ubuntu-latest
@@ -304,7 +309,7 @@ jobs:
             jenya00/crm_vontamona-backend:${{ github.sha }}
 
       - name: Telegram notify
-        if: always() && ${{secrets.TELEGRAM_BOT_TOKEN != ''}} && ${{secrets.TELEGRAM_CHAT_ID != ''}}
+        if: always()
         uses: appleboy/telegram-action@v1.0.0
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -313,6 +318,7 @@ jobs:
             Job: push-backend
             Status: ${{ job.status }}
             Image: jenya00/crm_vontamona-backend:${{ github.sha }}
+        continue-on-error: true
 
   build-and-push-frontend:
     runs-on: ubuntu-latest
@@ -341,7 +347,7 @@ jobs:
             jenya00/crm_vontamona-frontend:${{ github.sha }}
 
       - name: Telegram notify
-        if: always() && ${{secrets.TELEGRAM_BOT_TOKEN != ''}} && ${{secrets.TELEGRAM_CHAT_ID != ''}}
+        if: always()
         uses: appleboy/telegram-action@v1.0.0
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -350,6 +356,7 @@ jobs:
             Job: push-frontend
             Status: ${{ job.status }}
             Image: jenya00/crm_vontamona-frontend:${{ github.sha }}
+        continue-on-error: true
 
   update-k8s-manifests:
     name: Update K8s manifests (image tags)
@@ -386,7 +393,7 @@ jobs:
           git push
 
       - name: Telegram notify
-        if: always() && ${{secrets.TELEGRAM_BOT_TOKEN != ''}} && ${{secrets.TELEGRAM_CHAT_ID != ''}}
+        if: always()
         uses: appleboy/telegram-action@v1.0.0
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -396,3 +403,4 @@ jobs:
             Status: ${{ job.status }}
             Ref: ${{ github.ref_name }}
             Commit: ${{ github.sha }}
+        continue-on-error: true
