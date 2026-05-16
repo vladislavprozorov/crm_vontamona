@@ -8,7 +8,7 @@ const getApiUrl = () => {
   }
   // Если код выполняется на сервере Next.js (server-side)
   // Используем внутренний Docker hostname 'backend' или переменную окружения
-  return process.env.INTERNAL_API_URL || 'http://backend:3001';
+  return process.env.INTERNAL_API_URL || 'backend:3001';
 };
 
 const API_URL = getApiUrl();
