@@ -42,7 +42,7 @@ spec:
             ]
       containers:
         - name: backend
-          image: jenya00/crm_vontamona-backend:latest
+          image: jenya00/crm_vontamona-backend:0897628f3393ca095d5235300e9182ad5d97bde5
           imagePullPolicy: Always
           ports:
             - containerPort: 3001
